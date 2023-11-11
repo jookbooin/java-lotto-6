@@ -2,18 +2,18 @@ package lotto.model;
 
 import static lotto.constant.NumberConstant.CHECK_BONUS_NUMBER_CONDITION;
 
-public class WinningLottos {
+public class WinningResult {
 
     private final Lotto winningLottos;
     private final int bonusNumber;
 
-    public WinningLottos(Lotto winningLottos, int bonusNumber) {
+    public WinningResult(Lotto winningLottos, int bonusNumber) {
         this.winningLottos = winningLottos;
         this.bonusNumber = bonusNumber;
     }
 
-    public static WinningLottos createWinningLottos(Lotto winningLottos, int bonusNumber) {
-        return new WinningLottos(winningLottos, bonusNumber);
+    public static WinningResult createWinningResult(Lotto winningLotto, int bonusNumber) {
+        return new WinningResult(winningLotto, bonusNumber);
     }
 
     public Rank determineRank(Lotto lotto) {
@@ -21,7 +21,7 @@ public class WinningLottos {
         int matchNumberCount = lotto.countCommonNumberFromAnotherLotto(this.winningLottos);
         boolean bonus = checkExistBonusNumber(lotto, matchNumberCount);
 
-        return Rank.judge(matchNumberCount, bonus);
+        return Rank.findRank(matchNumberCount, bonus);
     }
 
     public boolean checkExistBonusNumber(Lotto lotto, int matchNumberCount) {

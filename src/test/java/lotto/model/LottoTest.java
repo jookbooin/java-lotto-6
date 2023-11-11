@@ -74,6 +74,19 @@ class LottoTest {
         assertThat(countBySuffle).isEqualTo(4);
     }
 
+    @Test
+    @DisplayName("containsLottoNumber 테스트")
+    public void containsLottoNumber() throws Exception{
+
+        Lotto lotto = new Lotto(List.of(1,2,3,4,5,6));
+        LottoNumber lottoNumber = new LottoNumber("3");
+
+        boolean flag = lotto.containsLottoNumber(lottoNumber);
+
+        assertThat(flag).isTrue();
+
+    }
+
 
 
 }

@@ -10,19 +10,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static lotto.model.WinningLottos.createWinningLottos;
+import static lotto.model.WinningResult.createWinningResult;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class WinningLottosTest {
 
-    private WinningLottos winningLottos;
+    private WinningResult winningLottos;
 
     @BeforeEach
     public void setup() {
         Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
         int bonusNumber = 7;
 
-        winningLottos = createWinningLottos(lotto, bonusNumber);
+        winningLottos = createWinningResult(lotto, bonusNumber);
 
     }
 

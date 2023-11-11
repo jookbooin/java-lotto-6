@@ -4,15 +4,17 @@ import static lotto.constant.NumberConstant.LOTTO_PRICE;
 import static lotto.constant.NumberConstant.ZERO;
 import static lotto.message.ErrorMessage.NOT_MULTIPLE_OF_THOUSAND;
 import static lotto.message.ErrorMessage.NOT_POSITIVE;
+import static lotto.validator.GlobalValidator.validateNumber;
 
 public class PurchaseAmount {
     private final int purchaseAmount;
 
-    public PurchaseAmount(String purchaseAmount) {
-        int convertedCost = Integer.parseInt(purchaseAmount);
-        validatePositive(convertedCost);
-        validateMultipleOfThousand(convertedCost);
-        this.purchaseAmount = convertedCost;
+    public PurchaseAmount(String input) {
+        validateNumber(input);
+        int purchaseAmount = Integer.parseInt(input);
+        validatePositive(purchaseAmount);
+        validateMultipleOfThousand(purchaseAmount);
+        this.purchaseAmount = purchaseAmount;
     }
 
     private void validatePositive(int convertedCost) {

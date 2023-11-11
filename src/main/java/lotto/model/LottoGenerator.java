@@ -14,13 +14,13 @@ public class LottoGenerator {
         return generateLottoByCount(lottoCount);
     }
 
-    public List<Lotto> generateLottoByCount(int lottoCount) {
+    private List<Lotto> generateLottoByCount(int lottoCount) {
         return IntStream.range(0, lottoCount)
                 .mapToObj(i -> createLotto())
                 .toList();
     }
 
-    public Lotto createLotto() {
+    private Lotto createLotto() {
         List<Integer> numbers = generateNumberInRange();
         return new Lotto(numbers);
     }

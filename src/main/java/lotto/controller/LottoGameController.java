@@ -1,31 +1,26 @@
 package lotto.controller;
 
 import lotto.model.*;
-import lotto.utils.LottoUtils;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import static lotto.constant.StringConstant.COMMA;
 import static lotto.message.GameMessage.*;
 import static lotto.message.LottoMessage.LOTTO_COUNT;
-import static lotto.model.WinningLottos.createWinningLottos;
-import static lotto.utils.LottoUtils.convertStringToInteger;
-import static lotto.utils.LottoUtils.splitStringToList;
-import static lotto.validator.WinningLottosValidator.validateBonusNumber;
+import static lotto.model.WinningResult.createWinningResult;
+import static lotto.validator.WinningLottoValidator.validateBonusNumberInWinningLotto;
 
 public class LottoGameController {
 
     private final OutputView output;
     private final InputView input;
     private final LottoGenerator lottoGenerator;
-    private final LottoResult lottoResult;
+    private final RankResult lottoResult;
 
 
-    public LottoGameController(OutputView output, InputView input, LottoGenerator lottoGenerator, LottoResult lottoResult) {
+    public LottoGameController(OutputView output, InputView input, LottoGenerator lottoGenerator, RankResult lottoResult) {
         this.output = output;
         this.input = input;
         this.lottoGenerator = lottoGenerator;
@@ -38,7 +33,7 @@ public class LottoGameController {
          * 1 로또 구매
          *
          * */
-        PurchaseAmount purchaseAmount = inputLottoPurchaseAmount();
+        PurchaseAmount purchaseAmount = readPurchaseAmount();
         List<Lotto> puchaseLottos = lottoGenerator.generatePurchaseLotto(purchaseAmount);
 
         /**
@@ -46,25 +41,25 @@ public class LottoGameController {
          * */
         printPurchaseLottos(puchaseLottos);
 
-
         /**
-         * 3. 당첨 금액 입력
+         * 3. 당첨 로또 번호 입력
+         * 4. 보너스 번호 입력
          * */
-        Lotto lottoWinningLottos = inputLottoWinningLottos();
+        Lotto winningLotto = readWinningLotto();
+        int bonusNumber = inputBonusNumber(winningLotto);
+        WinningResult winningResult = createWinningResult(winningLotto, bonusNumber);
 
-        /**4.*/
-        int bonusWinningNumber = inputBonusWinningNumber(lottoWinningLottos);
-        WinningLottos winningLottos = createWinningLottos(lottoWinningLottos, bonusWinningNumber);
 
-        calculateLottoWinningRecord(puchaseLottos, winningLottos);
-        Map<Rank, Integer> winningResult = getCalculatedWinningResult();
-
-        printWinningResultStatistics(winningResult);
-        printEarningRate(puchaseLottos.size());
+        /** service로 뺄 수 있을 것 같음. */
+//        calculateLottoWinningRecord(puchaseLottos, winningResult);
+//        Map<Rank, Integer> RankResult = getCalculatedWinningResult();
+//
+//        printWinningResultStatistics(RankResult);
+//        printEarningRate(puchaseLottos.size());
 
     }
 
-    private PurchaseAmount inputLottoPurchaseAmount() {
+    private PurchaseAmount readPurchaseAmount() {
 
         while (true) {
             try {
@@ -86,60 +81,53 @@ public class LottoGameController {
         printSortedPurchaseLottos(lottos);
     }
 
-    private void printSortedPurchaseLottos(List<Lotto> lottos) {
-        output.printPurchaseLottos(lottos);
-    }
-
     private void printPurchaseLottoCount(List<Lotto> lottos) {
         output.printLottoCount(LOTTO_COUNT, lottos.size());
     }
 
-    private Lotto inputLottoWinningLottos() {
+    private void printSortedPurchaseLottos(List<Lotto> lottos) {
+        output.printPurchaseLottos(lottos);
+    }
+
+    private Lotto readWinningLotto() {
 
         while (true) {
             try {
-                String numbers = inputWinningLottos();
-                return createLottoWinningLottos(numbers);
-            } catch (IllegalArgumentException e) {
-                output.printErrorMessage(e);
+                List<Integer> numbers = inputWinningNumbers();
+                return new Lotto(numbers);
+            } catch (IllegalArgumentException error) {
+                output.printErrorMessage(error);
             }
         }
 
     }
 
-    private String inputWinningLottos() {
+    private List<Integer> inputWinningNumbers() {
+        String input = inputWinningLotto();
+        WinningNumbers winningNumbers = new WinningNumbers(input);
+        List<Integer> numbers = winningNumbers.getNumbers().stream()
+                .map(LottoNumber::getNumber)
+                .toList();
+
+        return numbers;
+    }
+
+    private String inputWinningLotto() {
         output.printMessage(ASK_FOR_WINNING_NUMBER);
-        return input.lottoWinningLottos();
+        return input.winningLotto();
     }
 
-    private Lotto createLottoWinningLottos(String numbers) {
-        List<Integer> winningLottos = convertToWinningLottos(numbers);
-        return new Lotto(winningLottos);
-    }
 
-    private List<Integer> convertToWinningLottos(String input) {
-        List<String> numbers = splitStringToList(COMMA, input);
-        return convertToNumbers(numbers);
-    }
-
-    private List<Integer> convertToNumbers(List<String> numbers) {
-        return numbers.stream()
-                .map(LottoUtils::validateAndConvertStringToInteger)
-                .collect(Collectors.toList());
-    }
-
-    private int inputBonusWinningNumber(Lotto lottoWinningLottos) {
+    private int inputBonusNumber(Lotto winningLotto) {
 
         while (true) {
             try {
                 String number = inputBonusNumber();
-                int bonusWinningNumber = convertAndValidateBonusNumber(lottoWinningLottos, number);
-                return bonusWinningNumber;
+                return convertAndValidateBonusNumber(winningLotto, number);
             } catch (IllegalArgumentException e) {
                 output.printErrorMessage(e);
             }
         }
-
     }
 
     private String inputBonusNumber() {
@@ -147,13 +135,14 @@ public class LottoGameController {
         return input.bonusWinningLottos();
     }
 
-    private int convertAndValidateBonusNumber(Lotto lottoWinningLottos, String number) {
-        int bonusWinningNumber = convertStringToInteger(number);
-        validateBonusNumber(lottoWinningLottos, bonusWinningNumber);
-        return bonusWinningNumber;
+    private int convertAndValidateBonusNumber(Lotto winningLotto, String number) {
+        LottoNumber bonusLottoNumber = new LottoNumber(number);
+        validateBonusNumberInWinningLotto(winningLotto, bonusLottoNumber);
+        return bonusLottoNumber.getNumber();
     }
 
-    private void calculateLottoWinningRecord(List<Lotto> puchaseLottos, WinningLottos winningLottos) {
+
+    private void calculateLottoWinningRecord(List<Lotto> puchaseLottos, WinningResult winningLottos) {
         lottoResult.calculateWinningRecord(puchaseLottos, winningLottos);
     }
 

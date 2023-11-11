@@ -52,11 +52,11 @@ public class OutputView {
                     String reward = entry.getKey().rewardNumberFormat();
                     int myWinningCount = entry.getValue();
 
-                    if (entry.getKey().isBonusMatched()) {
+                    if (entry.getKey().isBonusMatch()) {
                         System.out.printf(EXIST_BONUS_MESSAGE.getMessage(), winningCount, reward, myWinningCount);
                     }
 
-                    if (!entry.getKey().isBonusMatched()) {
+                    if (!entry.getKey().isBonusMatch()) {
                         System.out.printf(NOT_EXIST_BONUS_MESSEAGE.getMessage(), winningCount, reward, myWinningCount);
                     }
                 });

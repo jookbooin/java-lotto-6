@@ -13,20 +13,26 @@ public enum Rank {
 
     private final int matchCount;
     private final int reward;
-    private final boolean isBonusMatched;
+    private final boolean bonusMatch;
 
-    Rank(int matchCount, int reward, boolean isBonusMatched) {
+    Rank(int matchCount, int reward, boolean bonusMatch) {
         this.matchCount = matchCount;
         this.reward = reward;
-        this.isBonusMatched = isBonusMatched;
+        this.bonusMatch = bonusMatch;
     }
 
     // 1,2,3,4,5,6 bonus : 7
     // 1,2,3,7,44,45
     // match : 3 bonusMatch : true 라서  FIFTH가 안나올 수 도 있다..?
-    public static Rank judge(int matchCount, boolean isBonusMatched) {
+    public static Rank findRank(int matchCount, boolean bonusMatch) {
+
+        /** 2등인 경우 */
+        if (matchCount == Rank.SECOND.getMatchCount() && bonusMatch)
+            return Rank.SECOND;
+
+        /** 나머지 */
         return Arrays.stream(values())
-                .filter(rank -> isSameMatchCount(matchCount, rank) && isSameBonusStatus(isBonusMatched, rank))
+                .filter(rank -> isSameMatchCount(matchCount, rank))
                 .findFirst()
                 .orElse(PASS);
     }
@@ -44,12 +50,12 @@ public enum Rank {
         return formatter.format(reward);
     }
 
-    public boolean isBonusMatched() {
-        return isBonusMatched;
+    public boolean isBonusMatch() {
+        return bonusMatch;
     }
 
-    private static boolean isSameBonusStatus(boolean isBonusMatched, Rank rank) {
-        return rank.isBonusMatched == isBonusMatched;
+    private static boolean isBonusMatch(boolean bonusMatch, Rank rank) {
+        return rank.bonusMatch == bonusMatch;
     }
 
     private static boolean isSameMatchCount(int matchCount, Rank rank) {

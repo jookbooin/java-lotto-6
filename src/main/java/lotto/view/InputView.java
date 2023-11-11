@@ -3,19 +3,17 @@ package lotto.view;
 import camp.nextstep.edu.missionutils.Console;
 
 import static lotto.validator.GlobalValidator.validateBlank;
-import static lotto.validator.GlobalValidator.validateNumber;
-import static lotto.validator.WinningLottosValidator.validateCommaAtStartOrEnd;
+import static lotto.validator.WinningLottoValidator.validateCommaAtStartOrEnd;
 
 public class InputView {
 
     public String purchaseAmount() {
         String input = Console.readLine();
         validateBlank(input);
-        validateNumber(input);
         return input;
     }
 
-    public String lottoWinningLottos() {
+    public String winningLotto() {
         String input = Console.readLine();
         validateBlank(input);
         validateCommaAtStartOrEnd(input);
@@ -25,7 +23,6 @@ public class InputView {
     public String bonusWinningLottos() {
         String input = Console.readLine();
         validateBlank(input);
-        validateNumber(input);
         return input;
     }
 }

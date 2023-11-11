@@ -2,7 +2,7 @@ package lotto.config;
 
 import lotto.controller.LottoGameController;
 import lotto.model.LottoGenerator;
-import lotto.model.LottoResult;
+import lotto.model.RankResult;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
@@ -24,8 +24,8 @@ public class ApplicationConfig {
         return new LottoGenerator();
     }
 
-    private LottoResult lottoResult() {
-        return new LottoResult();
+    private RankResult lottoResult() {
+        return new RankResult();
     }
 
 }

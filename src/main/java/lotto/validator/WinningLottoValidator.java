@@ -1,12 +1,13 @@
 package lotto.validator;
 
 import lotto.model.Lotto;
+import lotto.model.LottoNumber;
 
 import static lotto.constant.NumberConstant.LOTTO_NUMBER_END_INCLUSIVE;
 import static lotto.constant.NumberConstant.LOTTO_NUMBER_START_INCLUSIVE;
 import static lotto.message.ErrorMessage.*;
 
-public class WinningLottosValidator {
+public class WinningLottoValidator {
 
     private static final char COMMA = ',';
 
@@ -27,20 +28,22 @@ public class WinningLottosValidator {
         }
     }
 
-    public static void validateBonusNumber(Lotto winningLottos, int bonusNumber) {
-        validateLottoNumberInRange(bonusNumber);
-        validateBonusNumberInWinningLottos(winningLottos, bonusNumber);
-    }
+//    public static void validateBonusNumber(Lotto winningLottos, int bonusNumber) {
+//        validateLottoNumberInRange(bonusNumber);
+//        validateBonusNumberInWinningLotto(winningLottos, bonusNumber);
+//    }
 
-    public static void validateBonusNumberInWinningLottos(Lotto winningLottos, int bonusNumber) {
+    public static void validateBonusNumberInWinningLotto(Lotto winningLottos, int bonusNumber) {
         if (winningLottos.containsBonusNumber(bonusNumber))
             throw new IllegalArgumentException(EXIST_DUPLICATE.getMessage());
     }
 
-    public static void validateLottoNumberInRange(int lottoNumber) {
-        if (!isLottoNumberInRange(lottoNumber))
-            throw new IllegalArgumentException(OUT_OF_RANGE.getMessage());
+    public static void validateBonusNumberInWinningLotto(Lotto winningLottos, LottoNumber lottoNumber) {
+        if (winningLottos.containsLottoNumber(lottoNumber)) {
+            throw new IllegalArgumentException(EXIST_DUPLICATE.getMessage());
+        }
     }
+
 
     public static boolean isLottoNumberInRange(int lottoNumber) {
         return lottoNumber >= LOTTO_NUMBER_START_INCLUSIVE.value() && lottoNumber <= LOTTO_NUMBER_END_INCLUSIVE.value();

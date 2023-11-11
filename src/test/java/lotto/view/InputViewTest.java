@@ -6,7 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static lotto.validator.GlobalValidator.validateBlank;
-import static lotto.validator.WinningLottosValidator.validateCommaAtStartOrEnd;
+import static lotto.validator.WinningLottoValidator.validateCommaAtStartOrEnd;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class InputViewTest {

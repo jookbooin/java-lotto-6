@@ -9,11 +9,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class LottoMachineTest {
 
-    private LottoResult lottoMachine;
+    private RankResult lottoMachine;
 
     @BeforeEach
     public void setup() {
-        lottoMachine = new LottoResult();
+        lottoMachine = new RankResult();
     }
 
     @Test
@@ -25,7 +25,7 @@ class LottoMachineTest {
 
             assertThat(lottoMachine.getRankValue(rank)).isEqualTo(i);
 
-            lottoMachine.updateWinningRecord(rank);
+            lottoMachine.updateRankCount(rank);
 
             assertThat(lottoMachine.getRankValue(rank)).isEqualTo(i + 1);
         }
@@ -39,7 +39,7 @@ class LottoMachineTest {
 
             assertThat(lottoMachine.getRankValue(rank)).isEqualTo(0);
 
-            lottoMachine.updateWinningRecord(rank);
+            lottoMachine.updateRankCount(rank);
 
             assertThat(lottoMachine.getRankValue(rank)).isEqualTo(0);
         }
@@ -51,15 +51,15 @@ class LottoMachineTest {
         int lottoCount = 7;
         double earningRate;
 
-        lottoMachine.updateWinningRecord(Rank.FIFTH);
+        lottoMachine.updateRankCount(Rank.FIFTH);
         earningRate = lottoMachine.calculateEarningRate(lottoCount);
         assertThat(earningRate).isEqualTo(71.4);
 
-        lottoMachine.updateWinningRecord(Rank.FOURTH);
+        lottoMachine.updateRankCount(Rank.FOURTH);
         earningRate = lottoMachine.calculateEarningRate(lottoCount);
         assertThat(earningRate).isEqualTo(785.7);
 
-        lottoMachine.updateWinningRecord(Rank.THIRD);
+        lottoMachine.updateRankCount(Rank.THIRD);
         earningRate = lottoMachine.calculateEarningRate(lottoCount);
         assertThat(earningRate).isEqualTo(22214.3);
 

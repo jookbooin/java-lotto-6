@@ -11,7 +11,7 @@ class RankTest {
             "3:true:PASS", "2:false:PASS", "2:true:PASS", "4:true:PASS", "6:true:PASS"},
             delimiter = ':')
     void someTestMethod(int matchNumberCount, boolean bonus, Rank estimate) {
-        Rank result = Rank.judge(matchNumberCount, bonus);
+        Rank result = Rank.findRank(matchNumberCount, bonus);
         Assertions.assertThat(result).isEqualTo(estimate);
     }
 

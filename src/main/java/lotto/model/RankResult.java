@@ -7,27 +7,27 @@ import java.util.Map;
 import static lotto.utils.LottoUtils.getEarningResult;
 import static lotto.utils.LottoUtils.roundToFirstDecimal;
 
-public class LottoResult {
-    private final Map<Rank, Integer> winningRecord;
+public class RankResult {
+    private final Map<Rank, Integer> rankCount;
 
-    public LottoResult() {
-        winningRecord = new EnumMap<>(Rank.class);
+    public RankResult() {
+        rankCount = new EnumMap<>(Rank.class);
         for (Rank value : Rank.values()) {
-            winningRecord.put(value, 0);
+            rankCount.put(value, 0);
         }
     }
 
-    public void calculateWinningRecord(List<Lotto> lottos, WinningLottos winningLottos) {
+    public void calculateWinningRecord(List<Lotto> lottos, WinningResult winningResult) {
         for (Lotto lotto : lottos) {
-            Rank rank = winningLottos.determineRank(lotto);
-            updateWinningRecord(rank);
+            Rank rank = winningResult.determineRank(lotto);
+            updateRankCount(rank);
         }
     }
 
-    public void updateWinningRecord(Rank rank) {
+    public void updateRankCount(Rank rank) {
         if (rank == Rank.PASS)
             return;
-        winningRecord.put(rank, getRankValue(rank) + 1);
+        rankCount.put(rank, getRankValue(rank) + 1);
     }
 
     public double calculateEarningRate(int lottoCount) {
@@ -43,11 +43,11 @@ public class LottoResult {
 
 
     public int getRankValue(Rank rank) {
-        return winningRecord.get(rank);
+        return rankCount.get(rank);
     }
 
     public Map<Rank, Integer> getWiningResult() {
-        return new EnumMap<>(winningRecord);
+        return new EnumMap<>(rankCount);
     }
 
 }

@@ -6,8 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static lotto.constant.NumberConstant.LOTTO_PRICE;
-import static lotto.validator.GlobalValidator.validateNumber;
-import static lotto.validator.WinningLottosValidator.validateLottoNumberInRange;
 
 public class LottoUtils {
 
@@ -26,13 +24,6 @@ public class LottoUtils {
 
     public static int convertStringToInteger(String input) {
         return Integer.parseInt(input);
-    }
-
-    public static int validateAndConvertStringToInteger(String number) {
-        validateNumber(number);
-        int convertNumber = convertStringToInteger(number);
-        validateLottoNumberInRange(convertNumber);
-        return convertNumber;
     }
 
     public static double getEarningResult(int lottoCount, double totalPrize) {
