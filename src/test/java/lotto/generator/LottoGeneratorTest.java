@@ -1,6 +1,7 @@
 package lotto.generator;
 
 import lotto.model.Lotto;
+import lotto.model.LottoGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

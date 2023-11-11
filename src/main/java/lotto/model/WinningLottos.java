@@ -2,23 +2,23 @@ package lotto.model;
 
 import static lotto.constant.NumberConstant.CHECK_BONUS_NUMBER_CONDITION;
 
-public class WinningNumbers {
+public class WinningLottos {
 
-    private final Lotto winningNumbers;
+    private final Lotto winningLottos;
     private final int bonusNumber;
 
-    public WinningNumbers(Lotto winningNumbers, int bonusNumber) {
-        this.winningNumbers = winningNumbers;
+    public WinningLottos(Lotto winningLottos, int bonusNumber) {
+        this.winningLottos = winningLottos;
         this.bonusNumber = bonusNumber;
     }
 
-    public static WinningNumbers createWinningNumbers(Lotto winningNumbers, int bonusNumber) {
-        return new WinningNumbers(winningNumbers, bonusNumber);
+    public static WinningLottos createWinningLottos(Lotto winningLottos, int bonusNumber) {
+        return new WinningLottos(winningLottos, bonusNumber);
     }
 
     public Rank determineRank(Lotto lotto) {
 
-        int matchNumberCount = lotto.countCommonNumberFromAnotherLotto(this.winningNumbers);
+        int matchNumberCount = lotto.countCommonNumberFromAnotherLotto(this.winningLottos);
         boolean bonus = checkExistBonusNumber(lotto, matchNumberCount);
 
         return Rank.judge(matchNumberCount, bonus);

@@ -9,11 +9,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class LottoMachineTest {
 
-    private LottoMachine lottoMachine;
+    private LottoResult lottoMachine;
 
     @BeforeEach
     public void setup() {
-        lottoMachine = new LottoMachine();
+        lottoMachine = new LottoResult();
     }
 
     @Test

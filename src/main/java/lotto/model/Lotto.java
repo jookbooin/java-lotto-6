@@ -1,6 +1,5 @@
 package lotto.model;
 
-import camp.nextstep.edu.missionutils.Randoms;
 import lotto.constant.StringConstant;
 
 import java.util.HashSet;
@@ -8,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static lotto.constant.NumberConstant.*;
+import static lotto.constant.NumberConstant.LOTTO_SIZE;
 import static lotto.message.ErrorMessage.EXIST_DUPLICATE;
 import static lotto.message.ErrorMessage.INVALID_SIZE;
 
@@ -22,10 +21,7 @@ public class Lotto {
     }
 
     // TODO: 추가 기능 구현
-    public static Lotto createLotto() {
-        List<Integer> numbers = Randoms.pickUniqueNumbersInRange(LOTTO_NUMBER_START_INCLUSIVE.value(), LOTTO_NUMBER_END_INCLUSIVE.value(), LOTTO_SIZE.value());
-        return new Lotto(numbers);
-    }
+
 
     public String joinNumbersWithDelimiter(StringConstant stringConstant) {
         return numbers.stream()

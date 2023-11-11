@@ -10,19 +10,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static lotto.model.WinningNumbers.createWinningNumbers;
+import static lotto.model.WinningLottos.createWinningLottos;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class WinningNumbersTest {
+class WinningLottosTest {
 
-    private WinningNumbers winningNumbers;
+    private WinningLottos winningLottos;
 
     @BeforeEach
     public void setup() {
         Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
         int bonusNumber = 7;
 
-        winningNumbers = createWinningNumbers(lotto, bonusNumber);
+        winningLottos = createWinningLottos(lotto, bonusNumber);
 
     }
 
@@ -30,7 +30,7 @@ class WinningNumbersTest {
     @CsvSource(value = {"1:flase", "2:false", "3:false", "4:false", "5:true"}, delimiter = ':')
     @DisplayName("matchCount 5 일치하는지 테스트")
     public void isSameBonusNumberConditionTest(int matchNumberCount, boolean estimate) {
-        boolean flag = winningNumbers.isSameBonusNumberCondition(matchNumberCount);
+        boolean flag = winningLottos.isSameBonusNumberCondition(matchNumberCount);
         assertThat(flag).isEqualTo(estimate);
     }
 
@@ -41,8 +41,8 @@ class WinningNumbersTest {
         Lotto containsBonusNumber = new Lotto(List.of(2, 3, 4, 5, 6, 7));
         Lotto onlyFiveEqualLotto = new Lotto(List.of(2, 3, 4, 5, 6, 8));
 
-        boolean second = winningNumbers.checkExistBonusNumber(containsBonusNumber, matchNumberCount);
-        boolean third = winningNumbers.checkExistBonusNumber(onlyFiveEqualLotto, matchNumberCount);
+        boolean second = winningLottos.checkExistBonusNumber(containsBonusNumber, matchNumberCount);
+        boolean third = winningLottos.checkExistBonusNumber(onlyFiveEqualLotto, matchNumberCount);
 
         assertThat(second).isTrue();
         assertThat(third).isFalse();
@@ -66,7 +66,7 @@ class WinningNumbersTest {
 
         Lotto lotto = new Lotto(numbers);
 
-        Rank rank = winningNumbers.determineRank(lotto);
+        Rank rank = winningLottos.determineRank(lotto);
         assertThat(rank).isEqualTo(estimate);
 
     }

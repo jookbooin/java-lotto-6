@@ -30,8 +30,8 @@ public class OutputView {
         return String.format(ERROR_PREFIX.getMessage(), errorMessage);
     }
 
-    public void printLottoCount(Message message, int purchaseCost) {
-        System.out.printf(message.getMessage(), purchaseCost);
+    public void printLottoCount(Message message, int purchaseAmount) {
+        System.out.printf(message.getMessage(), purchaseAmount);
     }
 
     public void printPurchaseLottos(List<Lotto> lottos) {
@@ -48,15 +48,15 @@ public class OutputView {
     public void printWinningResultStatistics(Map<Rank, Integer> winningResult) {
         winningResult.entrySet().stream().filter(entry -> entry.getKey() != Rank.PASS)
                 .forEach(entry -> {
-                    int winningCount = entry.getKey().getMatchedNumberCount();
+                    int winningCount = entry.getKey().getMatchCount();
                     String reward = entry.getKey().rewardNumberFormat();
                     int myWinningCount = entry.getValue();
 
-                    if (entry.getKey().isRequiredBonusMatch()) {
+                    if (entry.getKey().isBonusMatched()) {
                         System.out.printf(EXIST_BONUS_MESSAGE.getMessage(), winningCount, reward, myWinningCount);
                     }
 
-                    if (!entry.getKey().isRequiredBonusMatch()) {
+                    if (!entry.getKey().isBonusMatched()) {
                         System.out.printf(NOT_EXIST_BONUS_MESSEAGE.getMessage(), winningCount, reward, myWinningCount);
                     }
                 });

@@ -6,7 +6,7 @@ import static lotto.constant.NumberConstant.LOTTO_NUMBER_END_INCLUSIVE;
 import static lotto.constant.NumberConstant.LOTTO_NUMBER_START_INCLUSIVE;
 import static lotto.message.ErrorMessage.*;
 
-public class WinningNumbersValidator {
+public class WinningLottosValidator {
 
     private static final char COMMA = ',';
 
@@ -27,13 +27,13 @@ public class WinningNumbersValidator {
         }
     }
 
-    public static void validateBonusNumber(Lotto winningNumbers, int bonusNumber) {
+    public static void validateBonusNumber(Lotto winningLottos, int bonusNumber) {
         validateLottoNumberInRange(bonusNumber);
-        validateBonusNumberInWinningNumbers(winningNumbers, bonusNumber);
+        validateBonusNumberInWinningLottos(winningLottos, bonusNumber);
     }
 
-    public static void validateBonusNumberInWinningNumbers(Lotto winningNumbers, int bonusNumber) {
-        if (winningNumbers.containsBonusNumber(bonusNumber))
+    public static void validateBonusNumberInWinningLottos(Lotto winningLottos, int bonusNumber) {
+        if (winningLottos.containsBonusNumber(bonusNumber))
             throw new IllegalArgumentException(EXIST_DUPLICATE.getMessage());
     }
 

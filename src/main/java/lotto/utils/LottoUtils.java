@@ -7,7 +7,7 @@ import java.util.List;
 
 import static lotto.constant.NumberConstant.LOTTO_PRICE;
 import static lotto.validator.GlobalValidator.validateNumber;
-import static lotto.validator.WinningNumbersValidator.validateLottoNumberInRange;
+import static lotto.validator.WinningLottosValidator.validateLottoNumberInRange;
 
 public class LottoUtils {
 

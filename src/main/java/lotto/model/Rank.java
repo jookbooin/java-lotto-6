@@ -11,25 +11,28 @@ public enum Rank {
     FIFTH(3, 5000, false),
     PASS(0, 0, false);
 
-    private final int matchedNumberCount;
+    private final int matchCount;
     private final int reward;
-    private final boolean requiredBonusMatch;
+    private final boolean isBonusMatched;
 
-    Rank(int matchedNumberCount, int reward, boolean requiredBonusMatch) {
-        this.matchedNumberCount = matchedNumberCount;
+    Rank(int matchCount, int reward, boolean isBonusMatched) {
+        this.matchCount = matchCount;
         this.reward = reward;
-        this.requiredBonusMatch = requiredBonusMatch;
+        this.isBonusMatched = isBonusMatched;
     }
 
-    public static Rank judge(int matchNumberCount, boolean requiredBonusMatch) {
-        return Arrays.stream(Rank.values())
-                .filter(rank -> isSameMatchedNumberCount(matchNumberCount, rank) && isSameBonusStatus(requiredBonusMatch, rank))
+    // 1,2,3,4,5,6 bonus : 7
+    // 1,2,3,7,44,45
+    // match : 3 bonusMatch : true 라서  FIFTH가 안나올 수 도 있다..?
+    public static Rank judge(int matchCount, boolean isBonusMatched) {
+        return Arrays.stream(values())
+                .filter(rank -> isSameMatchCount(matchCount, rank) && isSameBonusStatus(isBonusMatched, rank))
                 .findFirst()
                 .orElse(PASS);
     }
 
-    public int getMatchedNumberCount() {
-        return matchedNumberCount;
+    public int getMatchCount() {
+        return matchCount;
     }
 
     public int getReward() {
@@ -41,16 +44,16 @@ public enum Rank {
         return formatter.format(reward);
     }
 
-    public boolean isRequiredBonusMatch() {
-        return requiredBonusMatch;
+    public boolean isBonusMatched() {
+        return isBonusMatched;
     }
 
-    private static boolean isSameBonusStatus(boolean requiredBonusMatch, Rank rank) {
-        return rank.requiredBonusMatch == requiredBonusMatch;
+    private static boolean isSameBonusStatus(boolean isBonusMatched, Rank rank) {
+        return rank.isBonusMatched == isBonusMatched;
     }
 
-    private static boolean isSameMatchedNumberCount(int matchedNumberCount, Rank rank) {
-        return rank.matchedNumberCount == matchedNumberCount;
+    private static boolean isSameMatchCount(int matchCount, Rank rank) {
+        return rank.matchCount == matchCount;
     }
 
 }

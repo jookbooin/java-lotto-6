@@ -16,7 +16,7 @@ class PurchaseCostTest {
     @ValueSource(strings = {"-1", "0"})
     public void isNegative(String input) throws Exception {
 
-        assertThatThrownBy(() -> new PurchaseCost(input))
+        assertThatThrownBy(() -> new PurchaseAmount(input))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(NOT_POSITIVE.getMessage());
     }
@@ -26,7 +26,7 @@ class PurchaseCostTest {
     @ValueSource(strings = {"1001", "1002", "1003", "1004", "1005", "1006", "1007", "1008", "1009"})
     public void validateCanDivideThousand(String input) throws Exception {
 
-        assertThatThrownBy(() -> new PurchaseCost(input))
+        assertThatThrownBy(() -> new PurchaseAmount(input))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(NOT_MULTIPLE_OF_THOUSAND.getMessage());
     }
@@ -36,7 +36,7 @@ class PurchaseCostTest {
     @ValueSource(strings = {"13000"})
     public void calculateLottoCount(String input) throws Exception {
 
-        PurchaseCost purchaseCost = new PurchaseCost(input);
+        PurchaseAmount purchaseCost = new PurchaseAmount(input);
         Assertions.assertThat(purchaseCost.calculateLottoCount()).isEqualTo(13);
     }
 

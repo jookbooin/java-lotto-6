@@ -5,14 +5,14 @@ import static lotto.constant.NumberConstant.ZERO;
 import static lotto.message.ErrorMessage.NOT_MULTIPLE_OF_THOUSAND;
 import static lotto.message.ErrorMessage.NOT_POSITIVE;
 
-public class PurchaseCost {
-    private final int purchaseCost;
+public class PurchaseAmount {
+    private final int purchaseAmount;
 
-    public PurchaseCost(String purchaseCost) {
-        int convertedCost = Integer.parseInt(purchaseCost);
+    public PurchaseAmount(String purchaseAmount) {
+        int convertedCost = Integer.parseInt(purchaseAmount);
         validatePositive(convertedCost);
         validateMultipleOfThousand(convertedCost);
-        this.purchaseCost = convertedCost;
+        this.purchaseAmount = convertedCost;
     }
 
     private void validatePositive(int convertedCost) {
@@ -22,7 +22,7 @@ public class PurchaseCost {
     }
 
     public int calculateLottoCount() {
-        return purchaseCost / LOTTO_PRICE.value();
+        return purchaseAmount / LOTTO_PRICE.value();
     }
 
     private void validateMultipleOfThousand(int convertedCost) {

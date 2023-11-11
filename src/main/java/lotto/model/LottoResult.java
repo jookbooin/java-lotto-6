@@ -7,19 +7,19 @@ import java.util.Map;
 import static lotto.utils.LottoUtils.getEarningResult;
 import static lotto.utils.LottoUtils.roundToFirstDecimal;
 
-public class LottoMachine {
+public class LottoResult {
     private final Map<Rank, Integer> winningRecord;
 
-    public LottoMachine() {
+    public LottoResult() {
         winningRecord = new EnumMap<>(Rank.class);
         for (Rank value : Rank.values()) {
             winningRecord.put(value, 0);
         }
     }
 
-    public void calculateWinningRecord(List<Lotto> lottos, WinningNumbers winningNumbers) {
+    public void calculateWinningRecord(List<Lotto> lottos, WinningLottos winningLottos) {
         for (Lotto lotto : lottos) {
-            Rank rank = winningNumbers.determineRank(lotto);
+            Rank rank = winningLottos.determineRank(lotto);
             updateWinningRecord(rank);
         }
     }
