@@ -1,6 +1,7 @@
 package lotto.controller;
 
 import lotto.model.*;
+import lotto.view.InputHandler;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
@@ -9,7 +10,6 @@ import java.util.Map;
 
 import static lotto.message.GameMessage.*;
 import static lotto.message.LottoMessage.LOTTO_COUNT;
-import static lotto.model.WinningResult.createWinningResult;
 import static lotto.validator.WinningLottoValidator.validateBonusNumberInWinningLotto;
 
 public class LottoGameController {
@@ -18,6 +18,7 @@ public class LottoGameController {
     private final InputView input;
     private final LottoGenerator lottoGenerator;
     private final RankResult lottoResult;
+    private final InputHandler inputHandler;
 
 
     public LottoGameController(OutputView output, InputView input, LottoGenerator lottoGenerator, RankResult lottoResult) {
@@ -25,6 +26,7 @@ public class LottoGameController {
         this.input = input;
         this.lottoGenerator = lottoGenerator;
         this.lottoResult = lottoResult;
+        this.inputHandler = new InputHandler(output);
     }
 
     public void start() {
@@ -46,8 +48,8 @@ public class LottoGameController {
          * 4. 보너스 번호 입력
          * */
         Lotto winningLotto = readWinningLotto();
-        int bonusNumber = inputBonusNumber(winningLotto);
-        WinningResult winningResult = createWinningResult(winningLotto, bonusNumber);
+//        int bonusNumber = inputBonusNumber(winningLotto);
+//        WinningResult winningResult = createWinningResult(winningLotto, bonusNumber);
 
 
         /** service로 뺄 수 있을 것 같음. */
@@ -60,15 +62,8 @@ public class LottoGameController {
     }
 
     private PurchaseAmount readPurchaseAmount() {
-
-        while (true) {
-            try {
-                String money = inputPurchaseAmount();
-                return new PurchaseAmount(money);
-            } catch (IllegalArgumentException e) {
-                output.printErrorMessage(e);
-            }
-        }
+        PurchaseAmount purchaseAmount = inputHandler.repeatBeforeSuccess(() -> new PurchaseAmount(inputPurchaseAmount()));
+        return purchaseAmount;
     }
 
     private String inputPurchaseAmount() {
@@ -90,16 +85,8 @@ public class LottoGameController {
     }
 
     private Lotto readWinningLotto() {
-
-        while (true) {
-            try {
-                List<Integer> numbers = inputWinningNumbers();
-                return new Lotto(numbers);
-            } catch (IllegalArgumentException error) {
-                output.printErrorMessage(error);
-            }
-        }
-
+        Lotto lotto = inputHandler.repeatBeforeSuccess(() -> new Lotto(inputWinningNumbers()));
+        return lotto;
     }
 
     private List<Integer> inputWinningNumbers() {
@@ -119,15 +106,8 @@ public class LottoGameController {
 
 
     private int inputBonusNumber(Lotto winningLotto) {
-
-        while (true) {
-            try {
-                String number = inputBonusNumber();
-                return convertAndValidateBonusNumber(winningLotto, number);
-            } catch (IllegalArgumentException e) {
-                output.printErrorMessage(e);
-            }
-        }
+        Integer bonusNumber = inputHandler.repeatBeforeSuccess(() -> convertAndValidateBonusNumber(winningLotto, inputBonusNumber()));
+        return bonusNumber;
     }
 
     private String inputBonusNumber() {
